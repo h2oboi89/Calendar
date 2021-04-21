@@ -17,7 +17,7 @@ namespace Calendar.Tests
             var expected = new List<(DateTime date, DayOfWeek dayOfWeek)>
             {
                 (new DateTime(1900, 1, 1), DayOfWeek.Monday),
-                (new DateTime(2000, 1, 1), DayOfWeek.Tuesday),
+                (new DateTime(2000, 1, 1), DayOfWeek.Saturday),
                 (new DateTime(2021, 1, 1), DayOfWeek.Friday),
                 (new DateTime(2021, 2, 1), DayOfWeek.Monday),
                 (new DateTime(2021, 3, 1), DayOfWeek.Monday),
