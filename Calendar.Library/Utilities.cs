@@ -4,8 +4,17 @@ using System.Linq;
 
 namespace Calendar.Library
 {
+    /// <summary>
+    /// Utility Function
+    /// </summary>
     public static class Utilities
     {
+        /// <summary>
+        /// Determines which day of the week (Sunday, Monday, ...) a specified day falls on.
+        /// Duplication of built in function, but we wanted to implement it ourselves.
+        /// </summary>
+        /// <param name="date">Date to get day of week for.</param>
+        /// <returns>Day of the week a date falls on.</returns>
         public static DayOfWeek DayOfWeek(DateTime date)
         {
             var day = date.Day;
@@ -36,6 +45,11 @@ namespace Calendar.Library
             return (DayOfWeek)dayOfWeek;
         }
 
+        /// <summary>
+        /// Determines if a year is a leap year.
+        /// </summary>
+        /// <param name="year">Year to check.</param>
+        /// <returns>True if leap year; otherwise false.</returns>
         public static bool IsLeapYear(int year)
         {
             if (year % 400 == 0) return true;
@@ -46,7 +60,13 @@ namespace Calendar.Library
 
         private static readonly int[] DaysPerMonth = new int[] { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
-        public static int DaysInMonth(int year, int month)
+        /// <summary>
+        /// Determines how many days are a month.
+        /// </summary>
+        /// <param name="month">Month to check.</param>
+        /// <param name="year">Year month is in.</param>
+        /// <returns>Number of days in the specified month.</returns>
+        public static int DaysInMonth(int month, int year)
         {
             const int FEBRUARY = 1;
 
@@ -66,14 +86,15 @@ namespace Calendar.Library
         private const int INTER_MONTH_SPACE = 2;
         private static readonly string[] monthNames = new System.Globalization.CultureInfo("en-US").DateTimeFormat.MonthNames.Take(12).ToArray();
 
-        public static List<string> GenerateWeeks(int year, int month)
+
+        private static List<string> GenerateWeeks(int year, int month)
         {
             var weeks = new List<string>();
 
             var firstDay = (int)DayOfWeek(new DateTime(year, month + 1, 1));
 
             var day = 0;
-            var daysPerMonth = DaysInMonth(year, month);
+            var daysPerMonth = DaysInMonth(month, year);
 
             while (day < daysPerMonth)
             {
@@ -82,7 +103,7 @@ namespace Calendar.Library
                 var start = day == 0 ? firstDay : 0;
 
                 for (var i = start; i < week.Length && day < daysPerMonth; i++)
-                { 
+                {
                     week[i] = (++day).ToString().PadLeft(DAY_WIDTH);
                 }
 
@@ -92,7 +113,7 @@ namespace Calendar.Library
             return weeks;
         }
 
-        public static void GenerateRowOfMonths(int year, ref int month, string[] group, List<string> output, int totalWidth)
+        private static void GenerateRowOfMonths(int year, ref int month, string[] group, List<string> output, int totalWidth)
         {
             var monthNames = new List<string>();
             var weekHeaders = new List<string>();
@@ -131,6 +152,12 @@ namespace Calendar.Library
             output.Add(' '.Repeat(totalWidth));
         }
 
+        /// <summary>
+        /// Generates calendar for the specified year.
+        /// </summary>
+        /// <param name="year">Year to generate calendar for.</param>
+        /// <param name="width">How wide (in months) the calendar should be before wrapping.</param>
+        /// <returns>Collection of lines making up the calendar.</returns>
         public static IEnumerable<string> Generate(int year, int width)
         {
             var totalWidth = (width * MONTH_WIDTH) + ((width - 1) * INTER_MONTH_SPACE);
