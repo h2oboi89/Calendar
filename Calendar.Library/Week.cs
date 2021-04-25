@@ -7,7 +7,7 @@ namespace Calendar.Library
     /// <summary>
     /// Represents a period of 7 <see cref="Date"/>s (starting on Sunday) inside of a <see cref="Month"/>.
     /// </summary>
-    public class Week
+    public class Week : IEquatable<Week>
     {
         private const int LENGTH = 7;
         private static readonly string[] HEADER_VALUES = new string[] { "S", "M", "T", "W", "T", "F", "S" };
@@ -38,11 +38,11 @@ namespace Calendar.Library
                 throw new ArgumentException($"Invalid {nameof(days)}. Should be length {LENGTH}.", nameof(days));
             }
 
-            foreach(var day in days)
+            foreach (var day in days)
             {
                 if (day == null)
                 {
-                    throw new ArgumentException($"{days} can't contain null {typeof(Date)}s.", nameof(days));
+                    throw new ArgumentException($"{nameof(days)} can't contain null {typeof(Date)}s.", nameof(days));
                 }
             }
         }
@@ -61,13 +61,59 @@ namespace Calendar.Library
         /// <returns>Next <see cref="Week"/> from <paramref name="days"/>.</returns>
         public static Week Generate(Queue<Date> days)
         {
-            var firstDay = (int)days.Peek().DayOfWeek;
+            if (days == null)
+            {
+                throw new ArgumentNullException(nameof(days));
+            }
+
+            if (days.Count == 0)
+            {
+                throw new ArgumentException("No days to form week.", nameof(days));
+            }
 
             var weekDays = Empty.Days.Clone<Date>();
 
-            for (var i = firstDay; days.Count > 0 && i < LENGTH; i++)
+            var prev = -1;
+
+            while(days.Count > 0)
             {
-                weekDays[i] = days.Dequeue();
+                var day = days.Peek();
+
+                var dayOfWeek = (int)day.DayOfWeek;
+
+                if (dayOfWeek < prev)
+                {
+                    break;
+                }
+
+                day = days.Dequeue();
+
+                weekDays[dayOfWeek] = day;
+
+                prev = dayOfWeek;
+            }
+
+            var fillerSections = weekDays.FindSections()
+                .Where(s => weekDays[s.start].Equals(Date.Filler))
+                .ToList();
+
+            if (fillerSections.Count > 1)
+            {
+                throw new ArgumentException($"Only 1 section of date fillers is allowed, got {fillerSections.Count}.", nameof(days));
+            }
+
+            if (fillerSections.Count > 0)
+            {
+                // make sure it is at start (start == 0) or end (end = length - 1)
+                var fillerSection = fillerSections[0];
+                var start = 0;
+                var end = weekDays.Length - 1;
+
+                if ((fillerSection.start != start && fillerSection.end != end) ||
+                    (fillerSection.end != end && fillerSection.start != start))
+                {
+                    throw new ArgumentException("Filler sections must be at start or end.", nameof(days));
+                }
             }
 
             return new Week(weekDays);
@@ -89,5 +135,80 @@ namespace Calendar.Library
         /// </summary>
         /// <returns>A <see cref="string"/> that represents the current <see cref="Week"/>.</returns>
         public override string ToString() => ToString(null);
+
+        /// <summary>
+        /// Determines if the specified <see cref="object"/> is equal is equal to the current <see cref="Week"/>.
+        /// </summary>
+        /// <param name="obj">The <see cref="object"/> to compare with the current <see cref="Week"/>.</param>
+        /// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to the current <see cref="Week"/>; otherwise <see langword="false"/>.</returns>
+        public override bool Equals(object obj) => Equals(obj as Week);
+
+        /// <summary>
+        /// Determines if the specified <see cref="Week"/> is equal is equal to the current <see cref="Week"/>.
+        /// </summary>
+        /// <param name="other">The <see cref="Week"/> to compare with the current <see cref="Week"/>.</param>
+        /// <returns><see langword="true"/> if the specified <see cref="Week"/> is equal to the current <see cref="Week"/>; otherwise <see langword="false"/>.</returns>
+        public bool Equals(Week other)
+        {
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            for (var i = 0; i < LENGTH; i++)
+            {
+                if (Days[i] != other.Days[i])
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Determines if two <see cref="Week"/>s are equal.
+        /// </summary>
+        /// <param name="lhs">Left hand operand.</param>
+        /// <param name="rhs">Right hand operand.</param>
+        /// <returns><see langword="true"/> if operands are equal; otherwise <see langword="false"/>.</returns>
+        public static bool operator ==(Week lhs, Week rhs)
+        {
+            if (lhs is null)
+            {
+                return rhs is null;
+            }
+
+            return lhs.Equals(rhs);
+        }
+
+        /// <summary>
+        /// Determines if two <see cref="Week"/>s are not equal.
+        /// </summary>
+        /// <param name="lhs">Left hand operand.</param>
+        /// <param name="rhs">Right hand operand.</param>
+        /// <returns><see langword="true"/> if operands are not equal; otherwise <see langword="false"/>.</returns>
+        public static bool operator !=(Week lhs, Week rhs) => !(lhs == rhs);
+
+        /// <summary>
+        /// Retuns the hashcode for this instance.
+        /// </summary>
+        /// <returns>An <see cref="int"/> hash code.</returns>
+        public override int GetHashCode()
+        {
+            var hashCode = 339055328;
+
+            foreach(var date in Days)
+            {
+                hashCode = hashCode * -1521134295 + date.GetHashCode();
+            }
+
+            return hashCode;
+        }
     }
 }

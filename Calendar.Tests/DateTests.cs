@@ -28,6 +28,7 @@ namespace Calendar.Tests
             Assert.That(date.Year, Is.EqualTo(-1));
             Assert.That(date.Month, Is.EqualTo(-1));
             Assert.That(date.Day, Is.EqualTo(-1));
+            Assert.That(date.DayOfWeek, Is.EqualTo((DayOfWeek)(-1)));
         }
 
         [Test]
@@ -82,7 +83,7 @@ namespace Calendar.Tests
             }
 
             [Test]
-            public void Date_DifferentYear_ReturnsFalse()
+            public void DifferentYear_ReturnsFalse()
             {
                 var a = new Date(1, 2, 3);
                 var b = new Date(4, 2, 3);
@@ -92,7 +93,7 @@ namespace Calendar.Tests
             }
 
             [Test]
-            public void Date_DifferentMonth_ReturnsFalse()
+            public void DifferentMonth_ReturnsFalse()
             {
                 var a = new Date(1, 2, 3);
                 var b = new Date(1, 4, 3);
@@ -102,7 +103,7 @@ namespace Calendar.Tests
             }
 
             [Test]
-            public void Date_DifferentDay_ReturnsFalse()
+            public void DifferentDay_ReturnsFalse()
             {
                 var a = new Date(1, 2, 3);
                 var b = new Date(1, 2, 4);
@@ -112,7 +113,7 @@ namespace Calendar.Tests
             }
 
             [Test]
-            public void Date_SameValues_ReturnsTrue()
+            public void SameValues_ReturnsTrue()
             {
                 var a = new Date(1, 2, 3);
                 var b = new Date(1, 2, 3);
@@ -122,13 +123,30 @@ namespace Calendar.Tests
             }
 
             [Test]
-            public void Date_SameReference_ReturnsTrue()
+            public void SameReference_ReturnsTrue()
             {
                 var a = new Date(1, 2, 3);
                 var b = a;
 
                 Assert.That(a.Equals(b), Is.True);
                 Assert.That(a.GetHashCode(), Is.EqualTo(b.GetHashCode()));
+            }
+
+            [Test]
+            public void EqualityOperators_WorkAsExpected()
+            {
+                var a = new Date(1, 2, 3);
+                var b = new Date(1, 2, 3);
+                var c = new Date(4, 4, 6);
+
+                Assert.That(a == b, Is.True);
+                Assert.That(a == c, Is.False);
+
+                Assert.That(a != c, Is.True);
+                Assert.That(a != b, Is.False);
+
+                Assert.That(null == (Date)null, Is.True);
+                Assert.That(null == a, Is.False);
             }
         }
 

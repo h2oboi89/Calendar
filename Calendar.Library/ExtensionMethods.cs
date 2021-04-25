@@ -22,7 +22,6 @@ namespace Calendar.Library
             return array;
         }
 
-
         /// <summary>
         /// Creates a shallow copy of a range of elements in the source array.
         /// Similar to <see cref="List{T}.GetRange(int, int)"/>
@@ -125,6 +124,31 @@ namespace Calendar.Library
 
                 yield return chunk;
             }
+        }
+
+        public static IEnumerable<(int start, int end)> FindSections<T>(this T[] values)
+        {
+            int start = 0;
+            int count = 0;
+
+            for (var i = 0; i < values.Length - 1; i++, count++)
+            {
+                if (values[i].Equals(values[i + 1]))
+                {
+                    if (count == 0)
+                    {
+                        start = i;
+                    }
+                }
+                else
+                {
+                    yield return (start, i);
+                    count = 0;
+                    start = i + 1;
+                }
+            }
+
+            yield return (start, values.Length - 1);
         }
     }
 }

@@ -38,13 +38,13 @@ namespace Calendar.Library
         /// Creates a new <see cref="Month"/> with the specified values.
         /// </summary>
         /// <param name="year">Year the month is in.</param>
-        /// <param name="month">Month value.</param>
+        /// <param name="month">Month value. (1 - 12)</param>
         public Month(int year, int month)
         {
             Year = year;
             Value = month;
 
-            var daysInMonth = DaysInMonth(month, Year);
+            var daysInMonth = DaysInMonth(month - 1, Year);
 
             Days = new List<Date>();
 
@@ -91,9 +91,9 @@ namespace Calendar.Library
 
         private static int DaysInMonth(int month, int year)
         {
-            var days = DaysPerMonth[month - 1];
+            var days = DaysPerMonth[month];
 
-            if (month - 1 == FEBRUARY && Library.Year.IsLeap(year))
+            if (month == FEBRUARY && Library.Year.IsLeap(year))
             {
                 days++;
             }
