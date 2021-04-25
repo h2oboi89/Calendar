@@ -7,6 +7,24 @@ namespace Calendar.Library
     static class ExtensionMethods
     {
         /// <summary>
+        /// Creates a shallow copy of a range of elements in the source array.
+        /// Similar to <see cref="List{T}.GetRange(int, int)"/>
+        /// </summary>
+        /// <typeparam name="T">Type of the array.</typeparam>
+        /// <param name="array">Array to extract elements from.</param>
+        /// <param name="start">The zero-based array index at which the range starts.</param>
+        /// <param name="length">The number of elements in the range.</param>
+        /// <returns>A shallow copy of a range of elements in the source array.</returns>
+        public static T[] GetRange<T>(this T[] array, int start, int length)
+        {
+            var result = new T[length];
+
+            Array.Copy(array, start, result, 0, length);
+
+            return result;
+        }
+
+        /// <summary>
         /// Utility wrapper for Math.Floor that returns an int
         /// </summary>
         /// <param name="value">Value to floor.</param>

@@ -34,7 +34,7 @@ namespace Calendar
                 options.Width = 4;
             }
 
-            var lines = Utilities.Generate(options.Year, options.Width);
+            var lines = Year.Generate(options.Year, options.Width);
 
             Console.WriteLine(string.Join(Environment.NewLine, lines));
 
