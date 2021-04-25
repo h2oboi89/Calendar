@@ -94,7 +94,7 @@ namespace Calendar.Library
         {
             var value = ToString();
 
-            if (Equals(Filler))
+            if (Equals(Filler) || datesToHighlight == null)
             {
                 return value;
             }

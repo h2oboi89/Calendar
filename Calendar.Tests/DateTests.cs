@@ -60,7 +60,7 @@ namespace Calendar.Tests
         }
 
         [TestFixture]
-        public class EqualsAndGetHashCode
+        public class EqualsAndGetHashCodeTests
         {
             [Test]
             public void Null_ReturnsFalse()
@@ -159,6 +159,8 @@ namespace Calendar.Tests
                 var date = new Date(1, 2, 3);
 
                 var datesToHighlight = new List<Date> { new Date(3, 2, 1) };
+
+                Assert.That(date.ToString(null), Is.EqualTo(" 3"));
 
                 Assert.That(date.ToString(datesToHighlight), Is.EqualTo(" 3"));
 
