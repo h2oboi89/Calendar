@@ -57,10 +57,18 @@ namespace Calendar.Library
         /// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to the current <see cref="Date"/>; otherwise <see langword="false"/>.</returns>
         public override bool Equals(object obj)
         {
-            return obj is Date date &&
-                   Year == date.Year &&
-                   Month == date.Month &&
-                   Day == date.Day;
+            if (obj is Date date)
+            {
+                if (ReferenceEquals(this, date)) {
+                    return true;
+                }
+
+                return Year == date.Year
+                    && Month == date.Month
+                    && Day == date.Day;
+            }
+
+            return false;
         }
 
         /// <summary>
@@ -86,7 +94,7 @@ namespace Calendar.Library
         {
             var value = ToString();
 
-            if (Year == FILLER_VALUE || Month == FILLER_VALUE)
+            if (Equals(Filler))
             {
                 return value;
             }
@@ -94,7 +102,7 @@ namespace Calendar.Library
             foreach (var date in datesToHighlight)
             {
                 if (Equals(date))
-                { 
+                {
                     // This inverts console foreground and background colors to highlight value
                     value = $"\u001b[7m{value}\u001b[0m";
                     break;
