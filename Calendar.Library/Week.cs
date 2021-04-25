@@ -45,6 +45,8 @@ namespace Calendar.Library
                     throw new ArgumentException($"{nameof(days)} can't contain null {typeof(Date)}s.", nameof(days));
                 }
             }
+
+            Validate(days);
         }
 
         /// <summary>
@@ -75,7 +77,7 @@ namespace Calendar.Library
 
             var prev = -1;
 
-            while(days.Count > 0)
+            while (days.Count > 0)
             {
                 var day = days.Peek();
 
@@ -93,8 +95,15 @@ namespace Calendar.Library
                 prev = dayOfWeek;
             }
 
-            var fillerSections = weekDays.FindSections()
-                .Where(s => weekDays[s.start].Equals(Date.Filler))
+            Validate(weekDays);
+
+            return new Week(weekDays);
+        }
+
+        private static void Validate(Date[] days)
+        {
+            var fillerSections = days.FindSections()
+                .Where(s => days[s.start].Equals(Date.Filler))
                 .ToList();
 
             if (fillerSections.Count > 1)
@@ -104,10 +113,9 @@ namespace Calendar.Library
 
             if (fillerSections.Count > 0)
             {
-                // make sure it is at start (start == 0) or end (end = length - 1)
                 var fillerSection = fillerSections[0];
                 var start = 0;
-                var end = weekDays.Length - 1;
+                var end = days.Length - 1;
 
                 if ((fillerSection.start != start && fillerSection.end != end) ||
                     (fillerSection.end != end && fillerSection.start != start))
@@ -115,8 +123,6 @@ namespace Calendar.Library
                     throw new ArgumentException("Filler sections must be at start or end.", nameof(days));
                 }
             }
-
-            return new Week(weekDays);
         }
 
         /// <summary>
@@ -203,7 +209,7 @@ namespace Calendar.Library
         {
             var hashCode = 339055328;
 
-            foreach(var date in Days)
+            foreach (var date in Days)
             {
                 hashCode = hashCode * -1521134295 + date.GetHashCode();
             }
