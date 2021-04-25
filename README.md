@@ -68,4 +68,4 @@ Copyright c  2021
 ## Development
 `make release` for build.
 
-See ./Makefile for more details.
+See [Makefile](./Makefile) for more details.
