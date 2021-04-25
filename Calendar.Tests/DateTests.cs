@@ -8,7 +8,7 @@ using System.Collections.Generic;
 namespace Calendar.Tests
 {
     [TestFixture]
-    public class WeekTests
+    public class DateTests
     {
         [Test]
         public void DayOfWeek_ReturnsCorrectDayofWeek()
