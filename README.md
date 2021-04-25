@@ -7,7 +7,27 @@ Calendar is EXE project.
 
 ## Sample Ouput
 ```
-> .\Calendar\bin\Debug\Calendar.exe
+> .\Calendar\bin\Debug\Calendar.exe --help
+Calendar 1.0.0.0
+Copyright c  2021
+
+  -y, --year     [int] Year to print calendar for (default is current year)
+
+  -m, --month    [int] 1-12. The month to print. Limits calendar to print just specified month.
+
+  -w, --width    [int] How many months wide the calendar is (default is 4)
+
+  -d, --date     [string] MM-dd. Date to highlight. Months part is optional (default is current month).
+
+  --today        [bool] If set today's date will be highlighted (default is false).
+
+  --help         Display this help screen.
+
+  --version      Display version information.
+```
+
+```
+ .\Calendar\bin\Debug\Calendar.exe
 ======================================================================================
 
                                          2021
