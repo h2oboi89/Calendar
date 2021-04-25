@@ -133,7 +133,7 @@ namespace Calendar.Tests
         }
 
         [TestFixture]
-        public class _ToString
+        public class ToStringTests
         {
             [Test]
             public void Filler_ReturnsBlankString()
