@@ -7,6 +7,23 @@ namespace Calendar.Library
     static class ExtensionMethods
     {
         /// <summary>
+        /// Fills each item an array with specified value.
+        /// </summary>
+        /// <param name="array">Arrya to fill values in.</param>
+        /// <param name="value">Fill value.</param>
+        /// <returns>Array with each value replaced by fill value.</returns>
+        public static T[] Fill<T>(this T[] array, T value)
+        {
+            for (var i = 0; i < array.Length; i++)
+            {
+                array[i] = value;
+            }
+
+            return array;
+        }
+
+
+        /// <summary>
         /// Creates a shallow copy of a range of elements in the source array.
         /// Similar to <see cref="List{T}.GetRange(int, int)"/>
         /// </summary>
@@ -23,6 +40,14 @@ namespace Calendar.Library
 
             return result;
         }
+
+        /// <summary>
+        /// Creates a shallow copy of an array.
+        /// </summary>
+        /// <typeparam name="T">Type of the array.</typeparam>
+        /// <param name="array">Array to create a shallow copy of.</param>
+        /// <returns>A shallow copy of the array.</returns>
+        public static T[] Clone<T>(this T[] array) => array.GetRange(0, array.Length);
 
         /// <summary>
         /// Utility wrapper for Math.Floor that returns an int
@@ -99,48 +124,6 @@ namespace Calendar.Library
                 i += chunkSize;
 
                 yield return chunk;
-            }
-        }
-
-        /// <summary>
-        /// Fills each item an array with specified value.
-        /// </summary>
-        /// <param name="array">Arrya to fill values in.</param>
-        /// <param name="text">Fill value.</param>
-        /// <returns>Array with each value replaced by fill value.</returns>
-        public static string[] Fill(this string[] array, string text)
-        {
-            for (var i = 0; i < array.Length; i++)
-            {
-                array[i] = text;
-            }
-
-            return array;
-        }
-
-        /// <summary>
-        /// Increases length of each sublist in a list so that all are the same length.
-        /// </summary>
-        /// <param name="list">List of sublists.</param>
-        /// <param name="text">Value to append to each sublist if not maximum length.</param>
-        public static void Equalize(this List<List<string>> list, string text)
-        {
-            var maxLength = 0;
-
-            foreach (var subList in list)
-            {
-                if (maxLength < subList.Count)
-                {
-                    maxLength = subList.Count;
-                }
-            }
-
-            foreach (var subList in list)
-            {
-                if (subList.Count < maxLength)
-                {
-                    subList.Add(text);
-                }
             }
         }
     }

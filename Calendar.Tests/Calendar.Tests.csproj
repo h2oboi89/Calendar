@@ -34,7 +34,7 @@
     <Reference Include="System" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="UtilitiesTests.cs" />
+    <Compile Include="WeekTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="NUnit">
