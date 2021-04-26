@@ -64,3 +64,8 @@ Copyright c  2021
 26 27 28 29 30        24 25 26 27 28 29 30  28 29 30              26 27 28 29 30 31
                       31
 ```
+
+## Development
+`make release` for build.
+
+See [Makefile](./Makefile) for more details.

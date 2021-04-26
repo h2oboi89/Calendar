@@ -6,7 +6,7 @@ namespace Calendar.Library
     /// <summary>
     /// Represents a date in time.
     /// </summary>
-    public class Date
+    public class Date : IEquatable<Date>
     {
         private const int FILLER_VALUE = -1;
 
@@ -51,17 +51,57 @@ namespace Calendar.Library
         }
 
         /// <summary>
-        /// Determines if the specified <see cref="object"/> is equal is equal to the current <see cref="Date"/>.
+        /// Determines if the specified <see cref="object"/> is equal to the current <see cref="Date"/>.
         /// </summary>
         /// <param name="obj">The <see cref="object"/> to compare with the current <see cref="Date"/>.</param>
         /// <returns><see langword="true"/> if the specified <see cref="object"/> is equal to the current <see cref="Date"/>; otherwise <see langword="false"/>.</returns>
-        public override bool Equals(object obj)
+        public override bool Equals(object obj) => Equals(obj as Date);
+
+        /// <summary>
+        /// Determines if the specified <see cref="Date"/> is equal to the current <see cref="Date"/>.
+        /// </summary>
+        /// <param name="other">The <see cref="Date"/> to compare with the current <see cref="Date"/>.</param>
+        /// <returns><see langword="true"/> if the specified <see cref="Date"/> is equal to the current <see cref="Date"/>; otherwise <see langword="false"/>.</returns>
+        public bool Equals(Date other)
         {
-            return obj is Date date &&
-                   Year == date.Year &&
-                   Month == date.Month &&
-                   Day == date.Day;
+            if (other is null)
+            {
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            return Year == other.Year
+                && Month == other.Month
+                && Day == other.Day;
         }
+
+        /// <summary>
+        /// Determines if two <see cref="Date"/>s are equal.
+        /// </summary>
+        /// <param name="lhs">Left hand operand.</param>
+        /// <param name="rhs">Right hand operand.</param>
+        /// <returns><see langword="true"/> if operands are equal; otherwise <see langword="false"/>.</returns>
+        public static bool operator ==(Date lhs, Date rhs)
+        {
+            if (lhs is null)
+            {
+                return rhs is null;
+            }
+
+            return lhs.Equals(rhs);
+        }
+
+        /// <summary>
+        /// Determines if two <see cref="Date"/>s are not equal.
+        /// </summary>
+        /// <param name="lhs">Left hand operand.</param>
+        /// <param name="rhs">Right hand operand.</param>
+        /// <returns><see langword="true"/> if operands are not equal; otherwise <see langword="false"/>.</returns>
+        public static bool operator !=(Date lhs, Date rhs) => !(lhs == rhs);
 
         /// <summary>
         /// Retuns the hashcode for this instance.
@@ -69,7 +109,7 @@ namespace Calendar.Library
         /// <returns>An <see cref="int"/> hash code.</returns>
         public override int GetHashCode()
         {
-            int hashCode = 592158470;
+            var hashCode = 592158470;
             hashCode = hashCode * -1521134295 + Year.GetHashCode();
             hashCode = hashCode * -1521134295 + Month.GetHashCode();
             hashCode = hashCode * -1521134295 + Day.GetHashCode();
@@ -86,7 +126,7 @@ namespace Calendar.Library
         {
             var value = ToString();
 
-            if (Year == FILLER_VALUE || Month == FILLER_VALUE)
+            if (Equals(Filler) || datesToHighlight == null)
             {
                 return value;
             }
@@ -94,7 +134,7 @@ namespace Calendar.Library
             foreach (var date in datesToHighlight)
             {
                 if (Equals(date))
-                { 
+                {
                     // This inverts console foreground and background colors to highlight value
                     value = $"\u001b[7m{value}\u001b[0m";
                     break;
@@ -121,6 +161,11 @@ namespace Calendar.Library
         {
             get
             {
+                if (Equals(Filler))
+                {
+                    return (DayOfWeek)(-1);
+                }
+
                 var month = Month < 3 ? Month + 12 : Month;
 
                 var year = Year;

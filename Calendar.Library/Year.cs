@@ -20,11 +20,21 @@ namespace Calendar.Library
         private readonly Month[] Months;
 
         /// <summary>
+        /// Number of months in the year (always 12).
+        /// </summary>
+        public int Length => Months.Length;
+
+        /// <summary>
         /// Creates a new <see cref="Year"/> instance for the specified year value.
         /// </summary>
         /// <param name="year">Year to create an instance from.</param>
         public Year(int year)
         {
+            if (year < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(year), $"{nameof(year)} must be greater than 0.");
+            }
+
             Value = year;
 
             Months = new Month[Month.Names.Length];
