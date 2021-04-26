@@ -30,6 +30,11 @@ namespace Calendar.Library
         /// <param name="year">Year to create an instance from.</param>
         public Year(int year)
         {
+            if (year < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(year), $"{nameof(year)} must be greater than 0.");
+            }
+
             Value = year;
 
             Months = new Month[Month.Names.Length];
