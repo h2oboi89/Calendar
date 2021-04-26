@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
 
@@ -35,12 +36,28 @@ namespace Calendar.Library
         private readonly List<Date> Days;
 
         /// <summary>
+        /// Number of days in this month.
+        /// </summary>
+        public int Length => Days.Count;
+
+        /// <summary>
         /// Creates a new <see cref="Month"/> with the specified values.
+        /// NOTE: this uses the Gregorian calendar and dates before 1582-10-15 aren't accurate.
         /// </summary>
         /// <param name="year">Year the month is in.</param>
         /// <param name="month">Month value. (1 - 12)</param>
         public Month(int year, int month)
         {
+            if (year < 1)
+            {
+                throw new ArgumentOutOfRangeException(nameof(year), $"{nameof(year)} must be greater than 0.");
+            }
+
+            if (month < 1 || month > 12)
+            {
+                throw new ArgumentOutOfRangeException(nameof(month), $"{nameof(month)} must be between 1 & 12.");
+            }
+
             Year = year;
             Value = month;
 
@@ -82,7 +99,7 @@ namespace Calendar.Library
                 yield return week;
             }
 
-            while(count < weekCount)
+            while (count < weekCount)
             {
                 yield return Week.Empty;
                 count++;

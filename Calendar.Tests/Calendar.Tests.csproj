@@ -36,6 +36,7 @@
   <ItemGroup>
     <Compile Include="DateTests.cs" />
     <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="MonthTests.cs" />
     <Compile Include="WeekTests.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,6 +1,4 @@
-﻿// NUnit 3 tests
-// See documentation : https://github.com/nunit/docs/wiki/NUnit-Documentation
-using Calendar.Library;
+﻿using Calendar.Library;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
