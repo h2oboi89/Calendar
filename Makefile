@@ -85,7 +85,7 @@ set_assembly_info:
 	@echo Version: $(VERSION) ($(CONFIG))
 	@echo Githash: $(GIT_LONG_HASH)
 	@echo -----------------------------------
-	$(call set_assembly_info,$(CONFIG):$(GIT_LONG_HASH),$(VERSION))
+	$(call set_assembly_info,v$(VERSION):$(CONFIG):$(GIT_LONG_HASH),$(VERSION))
 
 # Overwrites $(SHARED_ASSEMBLY_FILE) information back to defaults
 .PHONY: clear_assembly_info

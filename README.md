@@ -1,14 +1,18 @@
 # Calendar
 
 ## Description
-Calendar is EXE project.
+Reimplemented a homework problem from freshmen year (2007) at Rose-Hulman for giggles because it kept bouncing around in my head. Have made some improvements beyond what I remember the actual requirements being.
+
+* Calendar is EXE project. 
+* Calendar.Library has most of the source. 
+* Calendar.Tests has test code
 
 `Calendar.exe --help` for usage
 
-## Sample Ouput
+## Sample Output
 ```
-> .\Calendar\bin\Debug\Calendar.exe --help
-Calendar 1.0.0.0
+> .\Calendar.exe --help
+Calendar v1.0.0.0:Release:82a3e524d309adcc351328cb691e20d351ea852e
 Copyright c  2021
 
   -y, --year     [int] Year to print calendar for (default is current year)
@@ -17,17 +21,19 @@ Copyright c  2021
 
   -w, --width    [int] How many months wide the calendar is (default is 4)
 
-  -d, --date     [string] MM-dd. Date to highlight. Months part is optional (default is current month).
+  -d, --date     [string] MM-dd. Date to highlight. Months part is optional (default is current
+                 month).
 
   --today        [bool] If set today's date will be highlighted (default is false).
 
   --help         Display this help screen.
 
   --version      Display version information.
+
 ```
 
 ```
- .\Calendar\bin\Debug\Calendar.exe
+> .\Calendar.exe
 ======================================================================================
 
                                          2021
@@ -63,9 +69,16 @@ Copyright c  2021
 19 20 21 22 23 24 25  17 18 19 20 21 22 23  21 22 23 24 25 26 27  19 20 21 22 23 24 25
 26 27 28 29 30        24 25 26 27 28 29 30  28 29 30              26 27 28 29 30 31
                       31
+
 ```
 
 ## Development
-`make release` for build.
+* `make tdd` for tests
+* `make release` for full build
 
 See [Makefile](./Makefile) for more details.
+
+You can also build and test via Visual Studio.
+
+Targeting .NET 4.8 using Visual Studio 19 (Community).
+
