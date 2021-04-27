@@ -34,7 +34,12 @@ namespace Calendar
         static void Main(string[] args)
         {
             Parser.Default.ParseArguments<Options>(args)
-                .WithParsed(Run);
+                .WithParsed(Run)
+                .WithNotParsed(Error);
+        }
+
+        static void Error(IEnumerable<Error> errors) {
+            Environment.Exit(1);
         }
 
         static void Run(Options options)
