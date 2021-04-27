@@ -136,6 +136,7 @@ create_artifacts: copy_to_release
 	@echo -----------------------------------
 	$(call make_dir,$(ARTIFACTS_DIR))
 	$(call zip_files,$(RELEASE_DIR)\Calendar,Calendar_$(CONFIG)_$(ZIP_TAG).zip,$(ARTIFACTS_DIR))
+	$(call zip_files,$(TDD_DIR),Calendar_Coverage_$(ZIP_TAG).zip,$(ARTIFACTS_DIR))
 
 # This rule runs main rules for builds
 .PHONY: build_configuration
@@ -146,11 +147,11 @@ build_configuration: set_assembly_info tdd create_artifacts clear_assembly_info
 release: CONFIG := Release
 release: VERSION := $(shell type $(VERSION_FILE))
 release: ZIP_TAG := $(VERSION)
-release: build_configuration package_projects
+release: build_configuration
 
 ## Executes a debug build
 .PHONY: debug
-debug: build_configuration package_projects
+debug: build_configuration
 
 ## This rule cleans the solution and deletes $(RELEASE_DIR) and $(ARTIFACTS)
 .PHONY: clean
